@@ -23,15 +23,19 @@ class Student
     @conn
   end
 
+  def self.all
+    @conn.exec("SELECT * FROM students")
+  end
+
   def self.find squad_id, id
     new @conn.exec('SELECT * FROM students WHERE squad_id = $1 AND id = $2', [ squad_id, id ] )[0] #, true
   end
 
   def save
     if existing?
-      Student.conn.exec('UPDATE students SET name=$1, age=$2, spirit_animal=$3 WHERE id = $4', [ params[:name], params[:age], params[:spirit_animal], id ] )
+      Student.conn.exec('UPDATE students SET name=$1, age=$2, spirit_animal=$3 WHERE id = $4', [ name, age, spirit_animal, id ] )
     else
-      Student.conn.exec('INSERT INTO students (name, age, spirit_animal, squad_id) values ($1,$2,$3,$4)', [ params[:name], params[:age], params[:spirit_animal], params[:squad_id] ])
+      Student.conn.exec('INSERT INTO students (name, age, spirit_animal, squad_id) values ($1,$2,$3,$4)', [ name, age, spirit_animal,squad_id ])
     end
   end
 
